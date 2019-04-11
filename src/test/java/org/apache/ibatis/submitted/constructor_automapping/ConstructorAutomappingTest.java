@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,45 +13,50 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package org.apache.ibatis.submitted.order_prefix_removed;
+package org.apache.ibatis.submitted.constructor_automapping;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.Reader;
+import java.util.List;
 
 import org.apache.ibatis.BaseDataTest;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class OrderPrefixRemoved {
+class ConstructorAutomappingTest {
 
   private static SqlSessionFactory sqlSessionFactory;
 
   @BeforeAll
-  public static void initDatabase() throws Exception {
-    try (Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/order_prefix_removed/ibatisConfig.xml")) {
+  static void setUp() throws Exception {
+    // create an SqlSessionFactory
+    try (Reader reader = Resources
+        .getResourceAsReader("org/apache/ibatis/submitted/constructor_automapping/mybatis-config.xml")) {
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
     }
 
+    // populate in-memory database
     BaseDataTest.runScript(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource(),
-            "org/apache/ibatis/submitted/order_prefix_removed/CreateDB.sql");
+        "org/apache/ibatis/submitted/constructor_automapping/CreateDB.sql");
   }
 
   @Test
-  public void testOrderPrefixNotRemoved() {
-    try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.SIMPLE)) {
-      PersonMapper personMapper = sqlSession.getMapper(PersonMapper.class);
-
-      Person person = personMapper.select(new String("slow"));
-
-      assertNotNull(person);
-
-      sqlSession.commit();
+  void shouldHandleColumnPrefixCorrectly() {
+    try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+      Mapper mapper = sqlSession.getMapper(Mapper.class);
+      List<Article> articles = mapper.nestedConstructorAutomapping();
+      assertEquals(2, articles.size());
+      Article article1 = articles.get(0);
+      assertEquals("Article1", article1.getTitle());
+      Author author1 = article1.getAuthor();
+      assertEquals(Integer.valueOf(100), author1.getId());
+      assertEquals("Author1", author1.getName());
     }
   }
+
 }

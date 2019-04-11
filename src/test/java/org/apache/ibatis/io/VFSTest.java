@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,19 +20,19 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Unit test for VFS getInstance method in multi-thread environment
- * 
- * @author: jasonleaster
+ *
+ * @author jasonleaster
  */
-public class VFSTest {
+class VFSTest {
 
   @Test
-  public void getInstanceShouldNotBeNull() throws Exception {
+  void getInstanceShouldNotBeNull() {
     VFS vsf = VFS.getInstance();
     Assertions.assertNotNull(vsf);
   }
 
   @Test
-  public void getInstanceShouldNotBeNullInMultiThreadEnv() throws InterruptedException {
+  void getInstanceShouldNotBeNullInMultiThreadEnv() throws InterruptedException {
     final int threadCount = 3;
 
     Thread[] threads = new Thread[threadCount];

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,12 +27,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class PermissionsTest {
+class PermissionsTest {
 
   private static SqlSessionFactory sqlSessionFactory;
 
   @BeforeAll
-  public static void setUp() throws Exception {
+  static void setUp() throws Exception {
     // create a SqlSessionFactory
     try (Reader reader = Resources.getResourceAsReader("org/apache/ibatis/submitted/permissions/mybatis-config.xml")) {
       sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
@@ -44,7 +44,7 @@ public class PermissionsTest {
   }
 
   @Test // see issue #168
-  public void checkNestedResultMapLoop() {
+  void checkNestedResultMapLoop() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       final PermissionsMapper mapper = sqlSession.getMapper(PermissionsMapper.class);
 
@@ -54,7 +54,7 @@ public class PermissionsTest {
       final Resource firstResource = resources.get(0);
       final List<Principal> principalPermissions = firstResource.getPrincipals();
       Assertions.assertEquals(1, principalPermissions.size());
-      
+
       final Principal firstPrincipal = principalPermissions.get(0);
       final List<Permission> permissions = firstPrincipal.getPermissions();
       Assertions.assertEquals(2, permissions.size());
@@ -67,7 +67,7 @@ public class PermissionsTest {
   }
 
   @Test
-  public void checkNestedSelectLoop() {
+  void checkNestedSelectLoop() {
     try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
       final PermissionsMapper mapper = sqlSession.getMapper(PermissionsMapper.class);
 
@@ -77,7 +77,7 @@ public class PermissionsTest {
       final Resource firstResource = resources.get(0);
       final List<Principal> principalPermissions = firstResource.getPrincipals();
       Assertions.assertEquals(1, principalPermissions.size());
-      
+
       final Principal firstPrincipal = principalPermissions.get(0);
       final List<Permission> permissions = firstPrincipal.getPermissions();
       Assertions.assertEquals(4, permissions.size());

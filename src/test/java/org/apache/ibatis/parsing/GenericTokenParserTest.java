@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -25,12 +25,12 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenericTokenParserTest {
+class GenericTokenParserTest {
 
   public static class VariableTokenHandler implements TokenHandler {
-    private Map<String, String> variables = new HashMap<String, String>();
+    private Map<String, String> variables = new HashMap<>();
 
-    public VariableTokenHandler(Map<String, String> variables) {
+    VariableTokenHandler(Map<String, String> variables) {
       this.variables = variables;
     }
 
@@ -41,7 +41,7 @@ public class GenericTokenParserTest {
   }
 
   @Test
-  public void shouldDemonstrateGenericTokenReplacement() {
+  void shouldDemonstrateGenericTokenReplacement() {
     GenericTokenParser parser = new GenericTokenParser("${", "}", new VariableTokenHandler(new HashMap<String, String>() {
       {
         put("first_name", "James");
@@ -77,8 +77,8 @@ public class GenericTokenParserTest {
   }
 
   @Test
-  public void shallNotInterpolateSkippedVaiables() {
-    GenericTokenParser parser = new GenericTokenParser("${", "}", new VariableTokenHandler(new HashMap<String, String>()));
+  void shallNotInterpolateSkippedVaiables() {
+    GenericTokenParser parser = new GenericTokenParser("${", "}", new VariableTokenHandler(new HashMap<>()));
 
     assertEquals("${skipped} variable", parser.parse("\\${skipped} variable"));
     assertEquals("This is a ${skipped} variable", parser.parse("This is a \\${skipped} variable"));
@@ -88,7 +88,7 @@ public class GenericTokenParserTest {
 
   @Disabled("Because it randomly fails on Travis CI. It could be useful during development.")
   @Test
-  public void shouldParseFastOnJdk7u6() {
+  void shouldParseFastOnJdk7u6() {
     Assertions.assertTimeout(Duration.ofMillis(1), () -> {
       // issue #760
       GenericTokenParser parser = new GenericTokenParser("${", "}", new VariableTokenHandler(new HashMap<String, String>() {

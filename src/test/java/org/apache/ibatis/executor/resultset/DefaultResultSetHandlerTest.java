@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DefaultResultSetHandlerTest {
+class DefaultResultSetHandlerTest {
 
   @Mock
   private Statement stmt;
@@ -68,11 +68,11 @@ public class DefaultResultSetHandlerTest {
 
   /**
    * Contrary to the spec, some drivers require case-sensitive column names when getting result.
-   * 
+   *
    * @see <a href="http://code.google.com/p/mybatis/issues/detail?id=557">Issue 557</a>
    */
   @Test
-  public void shouldRetainColumnNameCase() throws Exception {
+  void shouldRetainColumnNameCase() throws Exception {
 
     final MappedStatement ms = getMappedStatement();
 
@@ -98,11 +98,11 @@ public class DefaultResultSetHandlerTest {
 
     final List<Object> results = fastResultSetHandler.handleResultSets(stmt);
     assertEquals(1, results.size());
-    assertEquals(Integer.valueOf(100), ((HashMap) results.get(0)).get("cOlUmN1"));
+    assertEquals(100, ((HashMap) results.get(0)).get("cOlUmN1"));
   }
 
   @Test
-  public void shouldThrowExceptionWithColumnName() throws Exception {
+  void shouldThrowExceptionWithColumnName() throws Exception {
     final MappedStatement ms = getMappedStatement();
     final RowBounds rowBounds = new RowBounds(0, 100);
 

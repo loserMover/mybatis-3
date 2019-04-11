@@ -1,5 +1,5 @@
 /**
- *    Copyright 2009-2018 the original author or authors.
+ *    Copyright 2009-2019 the original author or authors.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ import org.junit.jupiter.api.Test;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BaseCacheTest {
+class BaseCacheTest {
 
   @Test
-  public void shouldDemonstrateEqualsAndHashCodeForVariousCacheTypes() {
+  void shouldDemonstrateEqualsAndHashCodeForVariousCacheTypes() {
     PerpetualCache cache = new PerpetualCache("test_cache");
     assertTrue(cache.equals(cache));
     assertTrue(cache.equals(new SynchronizedCache(cache)));
@@ -43,7 +43,7 @@ public class BaseCacheTest {
     assertEquals(cache.hashCode(), new LoggingCache(cache).hashCode());
     assertEquals(cache.hashCode(), new ScheduledCache(cache).hashCode());
 
-    Set<Cache> caches = new HashSet<Cache>();
+    Set<Cache> caches = new HashSet<>();
     caches.add(cache);
     caches.add(new SynchronizedCache(cache));
     caches.add(new SerializedCache(cache));
